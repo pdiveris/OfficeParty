@@ -12,7 +12,7 @@ class AffiliatesTest extends TestCase
     /**
      * Basic Affiliate creation (no params)
      */
-    public function zest_create_empty_affiliate(): void
+    public function test_create_empty_affiliates(): void
     {
         $affiliate = new Affiliates();
 
@@ -23,7 +23,7 @@ class AffiliatesTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function zest_load_from_text_no_file(): void
+    public function test_load_from_text_no_file(): void
     {
         $this->expectException(ErrorException::class);
         $var = Affiliates::loadManyFromTextFile(storage_path('data/afiliates.txt'));
@@ -32,7 +32,7 @@ class AffiliatesTest extends TestCase
     /**
      * @throws Exception
      */
-    public function zest_load_from_text(): void
+    public function test_load_from_text(): void
     {
         $affiliates = Affiliates::loadManyFromTextFile(storage_path('data/affiliates.txt'));
 
@@ -48,7 +48,7 @@ class AffiliatesTest extends TestCase
      *
      * {"latitude": "53.008769", "affiliate_id": 11, "name": "Isla-Rose Hubbard", "longitude": "-6.1056711"}
      */
-    public function zest_load_from_text_actual_data(): void
+    public function test_load_from_text_actual_data(): void
     {
         $affiliates = Affiliates::loadManyFromTextFile(storage_path('data/affiliates.txt'));
 
