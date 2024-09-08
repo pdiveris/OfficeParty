@@ -28,7 +28,13 @@ the project
 `./vendor/bin/sail up -d`
 
 After doing so, you should be able to see the one and only page with our listing by visiting http://localhost. 
-Usually I add an extra package to support SSL but I don't want to make things unnecessarily complicated.
+Usually I add an extra package to support SSL, but I don't want to make things unnecessarily complicated.
+
+In addition, you can also run get the lust from the command line with a console command. That would be
+
+`./vendor/bin/sail artisan affiliates:list`
+
+### 
 
 ### Testing
 

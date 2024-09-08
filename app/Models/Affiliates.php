@@ -77,7 +77,7 @@ class Affiliates
     /**
      * @throws Exception
      */
-    public static function getAffiliatesWithinRange(): ?array
+    public static function getAffiliatesWithinRange(?array $fields = []): ?array
     {
         $affiliates = new self(storage_path('data/affiliates.txt'));
         $selected = $affiliates->getAffiliates()->where(
@@ -85,6 +85,11 @@ class Affiliates
             '<=',
             100
         );
+
+        if (!empty($fields)) {
+            return $selected->select($fields)->toArray();
+        }
+
         return $selected->toArray();
     }
 }
