@@ -2,96 +2,61 @@
 
 namespace Tests\Unit;
 
-use App\Models\Affiliate;
-use PHPUnit\Framework\TestCase;
+use App\Models\Affiliates;
+use ErrorException;
+use Exception;
+use Tests\TestCase;
 
 class AffiliatesTest extends TestCase
 {
     /**
      * Basic Affiliate creation (no params)
      */
-    public function rest_create_empty_affiliate(): void
+    public function test_create_empty_affiliate(): void
     {
-        $affiliate = new Affiliate();
+        $affiliate = new Affiliates();
 
         $this->assertIsObject($affiliate);
-        $this->assertObjectHasProperty('affiliate_id', $affiliate);
-        $this->assertObjectHasProperty('longitude', $affiliate);
-        $this->assertObjectHasProperty('latitude', $affiliate);
-        $this->assertObjectHasProperty('name', $affiliate);
     }
 
     /**
-     * Affiliate creation with some data
+     * @return void
+     * @throws Exception
      */
-    public function rest_create_affiliate_with_data(): void
+    public function test_load_from_text_no_file(): void
     {
-        /**
-         * In a real situation we'd first check the affiliate has the methods getAffiliateId, getName etc
-         */
+        $this->expectException(ErrorException::class);
+        $var = Affiliates::loadManyFromTextFile(storage_path('data/afiliates.txt'));
+    }
 
-        $affiliate = new Affiliate(
-            101,
-            'Petros Diveris',
-            '50.9795',
-            '11.3235',
-        );
-
-        $this->assertIsObject($affiliate);
-        $this->assertEquals(
-            101,
-            $affiliate->getAffiliateId()
-        );
+    /**
+     * @throws Exception
+     */
+    public function test_load_from_text(): void
+    {
+        $affs = Affiliates::loadManyFromTextFile(storage_path('data/affiliates.txt'));
 
         $this->assertEquals(
-            'Petros Diveris',
-            $affiliate->getName()
-        );
-
-        $this->assertEquals(
-            '50.9795',
-            $affiliate->getLatitude()
-        );
-
-        $this->assertEquals(
-            '11.3235',
-            $affiliate->getLongitude()
+            'Illuminate\Support\Collection',
+            get_class($affs)
         );
     }
 
-    public function test_create_from_array(): void
+    /**
+     * @return void
+     * @throws Exception
+     *
+     * {"latitude": "53.008769", "affiliate_id": 11, "name": "Isla-Rose Hubbard", "longitude": "-6.1056711"}
+     */
+    public function test_load_from_text_actual_data(): void
     {
-        $affiliate = Affiliate::createFromArray(
-            [
-                'affiliate_id' => 23,
-                'name' => 'Mimi Perpignan',
-                'latitude' => '52.32423',
-                'longitude' => '-10.245',
-            ]
-        );
+        $affs = Affiliates::loadManyFromTextFile(storage_path('data/affiliates.txt'));
 
-        print_r($affiliate);
+        $filtered = $affs->where('affiliate_id', 11);
 
-        $this->assertIsObject($affiliate);
-        $this->assertEquals(
-            23,
-            $affiliate->getAffiliateId()
-        );
+        $isla = $filtered->first();
 
-        $this->assertEquals(
-            'Mimi Perpignan',
-            $affiliate->getName()
-        );
-
-        $this->assertEquals(
-            '52.32423',
-            $affiliate->getLatitude()
-        );
-
-        $this->assertEquals(
-            '-10.245',
-            $affiliate->getLongitude()
-        );
+        $this->assertEquals('Isla-Rose Hubbard', $isla['name']);
     }
 
 }
