@@ -73,4 +73,18 @@ class Affiliates
         $affiliate = new self($path);
         return $affiliate->getAffiliates();
     }
+
+    /**
+     * @throws Exception
+     */
+    public static function getAffiliatesWithinRange(): ?array
+    {
+        $affiliates = new self(storage_path('data/affiliates.txt'));
+        $selected = $affiliates->getAffiliates()->where(
+            'distance_from_dublin',
+            '<=',
+            100
+        );
+        return $selected->toArray();
+    }
 }
