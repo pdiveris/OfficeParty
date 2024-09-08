@@ -14,9 +14,18 @@ class AffiliatesTest extends TestCase
      */
     public function test_create_empty_affiliates(): void
     {
-        $affiliate = new Affiliates();
+        $affiliates = new Affiliates();
 
-        $this->assertIsObject($affiliate);
+        $this->assertIsObject($affiliates);
+
+        // Check for methods. Currently just checking for two
+        $this->assertTrue(
+            method_exists($affiliates, 'getAffiliatesWithinRange')
+        );
+
+        $this->assertTrue(
+            method_exists($affiliates, 'loadFromFile')
+        );
     }
 
     /**
