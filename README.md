@@ -1,66 +1,52 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Programming Assignment
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+The aim of this assignment is to demonstrate code ability in PHP and Markup. Specifically, one is required to use the affiliates.txt file which contains a list of affiliates along with the geographical coordinates. Furnished with this data as well as the coordinates of our Dublin HQ, one needs to fetch those affiliates within a range of 100km and display them in a reasonable way (i.e. with some good HTML and CSS).
 
-## About Laravel
+### Implementation
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+In implementing this I used Laravel - specifically version 11, the current latest one. In addition I am making use 
+Laravel Sail (wrapper for Docker) so that it can be installed and run easily anywhere with the required versions.  
+I am using version 8.2 of PHP as I it's not only required by Laravel 11; I am also making use of code hinting and other 
+goodies.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Installing
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+To get it up and running please check out the source and run composer install. To be able to run it you need to have 
+PHP version 8.2 or greater installed locally. Whilst it's possible to run it in an isolated fashion without the composer 
+install, instructions to do so are beyond the scope of this document. Before running `composer install` there are a few  
+extra steps required
 
-## Learning Laravel
+1. copy the supplied .env.example to .env
+2. edit line 29 - change `SESSION_DRIVER=database` to `SESSION_DRIVER=file`
+3. run `php ./artisan key:generate` from the project's root
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Running
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Assuming that you will run it using Docker / Sails, to run it you should execute the following command from the root of 
+the project
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+`./vendor/bin/sail up -d`
 
-## Laravel Sponsors
+After doing so, you should be able to see the one and only page with our listing by visiting http://localhost. 
+Usually I add an extra package to support SSL but I don't want to make things unnecessarily complicated.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Testing
 
-### Premium Partners
+To run the tests please do the following
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+`./vendor/bin/sail artisan test`
 
-## Contributing
+### Design and implementation
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+I decided to create a "Model" Affiliates which exists in app/Models. That's kind of odd as usually in Models we have 
+Eloquent classes that map one row to a structure whereas my "Model" really is a wrapper for a Collection, along with 
+some defaults, a constructor and a few methods. The reason it sits in there is that I originally envisaged creating actual 
+Eloquent instances - you can see this in the repo's log. I later realised that it's an unnecessary overkill which offers 
+no advantages. Using a Collection is handy as methods such as `sort` and `where` (query) are already implemented. 
+Now, getting back to the controversial location of my "Model" I though that hell, an Eloquent model is already, 
+mixed in that some methods return "self" and others a Collection - so I decided tha this is good enough for now. 
+We can discuss this at length! So, the model is responsible for loading the data and querying. 
+What's left is simply the route to point to the (now standard in Laravel) `__invoke` method. 
+The Controller's method in turn runs `getAffiliatesWithinRange()`. Now, the range could be a variable. 
+Then again, that's already a constant in the Model. I think that's good enough. Then again, I might make it so 
+that there is a form in the page and an AJAX update, maybe not. 

@@ -11,8 +11,8 @@ class Affiliates
 {
     const SORT_BY = 'affiliate_id';
 
-    const DUBLIN_LAT = 53.350140;
-    const DUBLIN_LON = -6.266155;
+    const DUBLIN_LAT = 53.3340285;
+    const DUBLIN_LON = -6.2535495;
 
     protected ?Collection $affiliates;
 
