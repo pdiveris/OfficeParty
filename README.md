@@ -38,10 +38,5 @@ To run the tests please do the following
 
 ### Design and implementation
 
-I've encapsulated a Collection in a class in Repositories. Using a Collection is handy as methods such as `sort` and `where` (query) are already implemented.
-Now, getting back to the controversial location of my "Model", I thought that hell, an Eloquent model is already,
-mixed, in that some methods return "self" and others a Collection - so I decided that this is good enough for now.
-We can discuss this at length! So, the model is responsible for loading the data and querying.
-What's left is simply the route to point to the (now standard in Laravel) `__invoke` method of the Controller, to which the route points.
-The Controller's method in turn runs `getAffiliatesWithinRange()`. I am aware that the range could be a variable.
-Then again, that's already a constant in the Model. If I get the time I'll  make it so  that there is a form in the page and an AJAX update, maybe not. 
+I've encapsulated a Collection in a class in Repositories. Using a Collection is handy as methods such as `sort` and `where` (query) are already implemented.  So, the Repository is responsible for loading the data and querying.
+What's left is simply the route to point to the (now standard in Laravel) `__invoke` method of the Controller, to which the route points.  The Controller's method in turn runs `getAffiliatesWithinRange()`. I am aware that the range could be a variable.  Then again, that's already a constant in the Model. If I get the time I'll  make it so  that there is a form in the page and an AJAX update, maybe not. 
