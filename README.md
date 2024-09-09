@@ -42,11 +42,7 @@ To run the tests please do the following
 
 ### Design and implementation
 
-I decided to create a "Model" `Affiliates` which exists in `app/Models`. That's a bit odd as usually in Models we have 
-Eloquent classes that map one row to a structure, whereas my "Model" really is a wrapper for a Collection, along with 
-some defaults, a constructor and a few methods. The reason it sits in there is that I originally envisaged creating actual 
-Eloquent instances - you can see this in the repo's log. I later realised that it's an unnecessary overkill which offers 
-no advantages. Using a Collection is handy as methods such as `sort` and `where` (query) are already implemented. 
+I've encapsulated a Collection in a class in Repositories. Using a Collection is handy as methods such as `sort` and `where` (query) are already implemented. 
 Now, getting back to the controversial location of my "Model", I thought that hell, an Eloquent model is already, 
 mixed, in that some methods return "self" and others a Collection - so I decided that this is good enough for now. 
 We can discuss this at length! So, the model is responsible for loading the data and querying. 
