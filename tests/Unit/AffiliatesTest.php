@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Models\Affiliates;
+use App\Repositories\Affiliates;
 use ErrorException;
 use Exception;
 use Tests\TestCase;

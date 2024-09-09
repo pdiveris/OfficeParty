@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Affiliates;
+use App\Repositories\Affiliates;
 
 class SiteController extends Controller
 {

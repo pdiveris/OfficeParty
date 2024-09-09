@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Affiliates;
+use App\Repositories\Affiliates;
 use Illuminate\Console\Command;
 
 class ListInRange extends Command
