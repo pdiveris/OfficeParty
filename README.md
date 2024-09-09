@@ -2,7 +2,7 @@
 
 The aim of this assignment is to demonstrate code ability in PHP and Markup. Specifically, one is invited to use the affiliates.txt file which contains a list of affiliates along with the geographical coordinates. Furnished with these data as well as the coordinates of our Dublin HQ, we then have to fetch those affiliates within a range of 100km and display them in a presentable way (i.e. with some good HTML and CSS).
 
-#### NB: affiliates.txt is not va;id JSON but a list of JSON objects, one per line
+#### NB: affiliates.txt is not valid JSON but a list of JSON objects, one per line
 
 ### Implementation
 
